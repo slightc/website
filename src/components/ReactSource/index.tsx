@@ -4,7 +4,7 @@ import {
   getRangeContent,
   parseRange,
 } from "@site/src/utils/file";
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import CodeBlock from "@theme/CodeBlock";
 import { css } from "@emotion/css";
 
@@ -91,14 +91,59 @@ function useReactSourceContent(filePath: string) {
 
 // const reactLocalPath = "vscode://file/Users/chenh/Desktop/code/git/react/";
 
+function parseLineRange(
+  range: (number | [number, number])[] | number | string | undefined
+): {
+  start: number;
+  end: number;
+}[] {
+  if(!range) return [];
+  if (typeof range === "string") {
+    const list = range.replace(/[{}]/g, "").split(",");
+    return list.map((item) => {
+      let [start, end] = item.split("-").map((item) => {
+        return parseInt(item);
+      });
+      return {
+        start,
+        end: end || start,
+      };
+    });
+  }
+  if (typeof range === "number") {
+    return [
+      {
+        start: range,
+        end: range,
+      },
+    ];
+  }
+  return range.map((r) => {
+    return {
+      start: Array.isArray(r) ? r[0] : r,
+      end: Array.isArray(r) ? r[1] || r[0] : r,
+    };
+  });
+}
+
 export const ReactSourceHighlight = (props: {
   path: string;
   language?: string;
   highlight?: (number | [number, number])[] | string | undefined;
+  collapse?: (number | [number, number])[] | string | undefined;
 }) => {
   const { data, isLoading, start, url, path } = useReactSourceContent(
     props.path
   );
+  const collapseRange = useMemo(() => {
+    return parseLineRange(props.collapse).map((range) => {
+      return {
+        start: range.start - start - 1,
+        end: range.end - start - 1,
+      };
+    });
+  }, [props.collapse]);
+
   const highlightMeta = useMemo(() => {
     if (!props.highlight) {
       return "";
@@ -134,6 +179,40 @@ export const ReactSourceHighlight = (props: {
 
   // const localUrl = reactLocalPath + path + ":" + (start + 1);
 
+  const getLineBeforeNode = useCallback((line: number) => {
+    if (collapseRange.some((item) => line === item.start)) {
+      return (
+        <span
+          className={css({
+            userSelect: "none",
+            color: "var(--ifm-color-emphasis-300)",
+          })}
+        >
+          {" "}
+          <span
+            className={css({
+              position: "absolute",
+              width: "100%",
+            })}
+          >
+            ~~~~~~~~~~~~~~
+          </span>
+        </span>
+      );
+    }
+  }, []);
+
+  const getLineClassName = useCallback((line: number) => {
+    if (collapseRange.some(({ start, end }) => line >= start && line <= end)) {
+      return css({
+        height: 0,
+        opacity: 0,
+        overflow: "hidden",
+        position: "absolute",
+      });
+    }
+  }, []);
+
   return (
     <CodeBlock
       language={props.language || "js"}
@@ -147,6 +226,10 @@ export const ReactSourceHighlight = (props: {
       metastring={`${highlightMeta}`}
       showLineNumbers
       className={css({ counterReset: `line-count ${start}` })}
+      {...{
+        getLineBeforeNode,
+        getLineClassName,
+      }}
     >
       {isLoading ? "loading" : data}
     </CodeBlock>
