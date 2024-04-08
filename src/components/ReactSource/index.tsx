@@ -215,7 +215,7 @@ export const ReactSourceHighlight = (props: {
 
   return (
     <CodeBlock
-      language={props.language || "js"}
+      language={props.language || "ts"}
       title={
         (
           <a href={url} target="_blank">

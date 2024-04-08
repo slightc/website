@@ -12,3 +12,5 @@ react的渲染从`root.render`开始，`root.render`方法调用了`updateContai
 
 `OpaqueRoot`目前就是`FiberRoot`
 <ReactSourceHighlight path="packages/react-reconciler/src/ReactFiberReconciler.old.js#L117" />
+
+<ReactSourceHighlight path="packages/react-reconciler/src/ReactInternalTypes.js#L196-L216" collapse="{197-203,207-213}" />

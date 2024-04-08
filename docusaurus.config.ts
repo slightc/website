@@ -119,6 +119,22 @@ const config: Config = {
       category: "General",
       categoryId: "DIC_kwDOLrKr7s4CeiGk",
     },
+    algolia: {
+      // The application ID provided by Algolia
+      appId: "ANJMDJ0JUV",
+
+      // Public API key: it is safe to commit it
+      apiKey: "a5ffcec7bd9405250bbfa55ad805be2a",
+
+      indexName: "slightc",
+
+      // Optional
+      // contextualSearch: true,
+      // searchParameters: {},
+      searchPagePath: "search",
+
+      //... other Algolia params
+    },
   } satisfies Preset.ThemeConfig,
 };
 
