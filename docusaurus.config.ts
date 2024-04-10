@@ -124,13 +124,15 @@ const config: Config = {
       appId: "ANJMDJ0JUV",
 
       // Public API key: it is safe to commit it
-      apiKey: "a5ffcec7bd9405250bbfa55ad805be2a",
+      apiKey: "f27d8193c3225f2fdf11de2a5bdccc7c",
 
       indexName: "slightc",
 
       // Optional
-      // contextualSearch: true,
-      // searchParameters: {},
+      contextualSearch: false,
+      searchParameters: {
+        facetFilters: [],
+      },
       searchPagePath: "search",
 
       //... other Algolia params
