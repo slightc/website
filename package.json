@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@docusaurus/core": "3.2.1",
+    "@docusaurus/plugin-vercel-analytics": "^3.2.1",
     "@docusaurus/preset-classic": "3.2.1",
     "@emotion/css": "^11.11.2",
     "@giscus/react": "^3.0.0",

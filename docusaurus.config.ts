@@ -28,6 +28,7 @@ const config: Config = {
     defaultLocale: "zh-Hans",
     locales: ["zh-Hans"],
   },
+  plugins: ["vercel-analytics"],
 
   presets: [
     [
