@@ -202,32 +202,29 @@ export const ReactSourceHighlight = (props: {
     }
   }, []);
 
-  const getLineClassName = useCallback(
-    (line: number) => {
-      const list: string[] = [];
-      if (line === 0) {
-        list.push(
-          css({
-            counterReset: `line-count ${start}`,
-          })
-        );
-      }
-      if (
-        collapseRange.some(({ start, end }) => line >= start && line <= end)
-      ) {
-        list.push(
-          css({
-            height: 0,
-            opacity: 0,
-            overflow: "hidden",
-            position: "absolute",
-          })
-        );
-      }
-      return list.join(" ");
-    },
-    [start]
-  );
+  const getLineClassName = useCallback((line: number) => {
+    const list: string[] = [
+      css({
+        "&>span:first-child": {
+          counterIncrement: "line-count",
+        },
+        "&>span:first-child::before": {
+          content: "counter(line-count)",
+        },
+      }),
+    ];
+    if (collapseRange.some(({ start, end }) => line >= start && line <= end)) {
+      list.push(
+        css({
+          height: 0,
+          opacity: 0,
+          overflow: "hidden",
+          position: "absolute",
+        })
+      );
+    }
+    return list.join(" ");
+  }, []);
 
   return (
     <CodeBlock
@@ -241,6 +238,7 @@ export const ReactSourceHighlight = (props: {
       }
       metastring={`${highlightMeta}`}
       showLineNumbers
+      className={css({ counterReset: `line-count ${start}` })}
       {...{
         getLineBeforeNode,
         getLineClassName,
