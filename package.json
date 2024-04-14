@@ -22,6 +22,7 @@
     "@giscus/react": "^3.0.0",
     "@mdx-js/react": "^3.0.0",
     "clsx": "^2.0.0",
+    "jinrishici": "^1.0.6",
     "prism-react-renderer": "^2.3.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",
