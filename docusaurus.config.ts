@@ -4,7 +4,7 @@ import type * as Preset from "@docusaurus/preset-classic";
 
 const config: Config = {
   title: "Hans Site",
-  tagline: "Dinosaurs are cool",
+  tagline: "",
   favicon: "https://github.com/slightc.png",
 
   // Set the production url of your site here
