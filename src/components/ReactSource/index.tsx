@@ -97,7 +97,7 @@ function parseLineRange(
   start: number;
   end: number;
 }[] {
-  if(!range) return [];
+  if (!range) return [];
   if (typeof range === "string") {
     const list = range.replace(/[{}]/g, "").split(",");
     return list.map((item) => {
@@ -202,16 +202,32 @@ export const ReactSourceHighlight = (props: {
     }
   }, []);
 
-  const getLineClassName = useCallback((line: number) => {
-    if (collapseRange.some(({ start, end }) => line >= start && line <= end)) {
-      return css({
-        height: 0,
-        opacity: 0,
-        overflow: "hidden",
-        position: "absolute",
-      });
-    }
-  }, []);
+  const getLineClassName = useCallback(
+    (line: number) => {
+      const list: string[] = [];
+      if (line === 0) {
+        list.push(
+          css({
+            counterReset: `line-count ${start}`,
+          })
+        );
+      }
+      if (
+        collapseRange.some(({ start, end }) => line >= start && line <= end)
+      ) {
+        list.push(
+          css({
+            height: 0,
+            opacity: 0,
+            overflow: "hidden",
+            position: "absolute",
+          })
+        );
+      }
+      return list.join(" ");
+    },
+    [start]
+  );
 
   return (
     <CodeBlock
@@ -225,7 +241,6 @@ export const ReactSourceHighlight = (props: {
       }
       metastring={`${highlightMeta}`}
       showLineNumbers
-      className={css({ counterReset: `line-count ${start}` })}
       {...{
         getLineBeforeNode,
         getLineClassName,
