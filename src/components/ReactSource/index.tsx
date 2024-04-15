@@ -206,10 +206,10 @@ export const ReactSourceHighlight = (props: {
     const list: string[] = [
       css({
         "&>span:first-child": {
-          counterIncrement: "line-count",
+          counterIncrement: "line-count-2",
         },
         "&>span:first-child::before": {
-          content: "counter(line-count)",
+          content: "counter(line-count-2)",
         },
       }),
     ];
@@ -238,7 +238,7 @@ export const ReactSourceHighlight = (props: {
       }
       metastring={`${highlightMeta}`}
       showLineNumbers
-      className={css({ counterReset: `line-count ${start}` })}
+      className={css({ counterReset: `line-count-2 ${start}` })}
       {...{
         getLineBeforeNode,
         getLineClassName,
